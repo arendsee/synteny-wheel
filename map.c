@@ -1,25 +1,25 @@
 #include "map.h"
 
-struct Point * init_point(unsigned int pos)
+Point * init_point(unsigned int pos)
 {
-    struct Point * point = (struct Point *)malloc(sizeof(struct Point));
+    Point * point = (Point *)malloc(sizeof(Point));
     point->pos = pos; 
     point->prev = NULL;
     point->next = NULL;
     return point;
 }
 
-struct Link * init_link(float score)
+Link * init_link(float score)
 {
-    struct Link * link = (struct Link *)malloc(sizeof(struct Link));
+    Link * link = (Link *)malloc(sizeof(Link));
     link->score = score; 
-    link->p = (struct Point **)malloc(2 * sizeof(struct Point *));
+    link->p = (Point **)malloc(2 * sizeof(Point *));
     link->p[0] = NULL;
     link->p[1] = NULL;
     return link;
 }
 
-void delete_point(struct Point * point)
+void delete_point(Point * point)
 {
     if(point){
         if(point->prev)
@@ -30,7 +30,7 @@ void delete_point(struct Point * point)
     }
 }
 
-void delete_link(struct Link * link)
+void delete_link(Link * link)
 {
     if(link){
         if(link->p[0])
@@ -41,7 +41,7 @@ void delete_link(struct Link * link)
     }
 }
 
-void print_link(struct Link * link)
+void print_link(Link * link)
 {
     if(link){
         printf(
@@ -56,21 +56,21 @@ void print_link(struct Link * link)
 // Comparison function for sorting by left-side (genome A)
 static int cmp_by_a(const void * p1, const void * p2)
 {
-    unsigned int a = (* (struct Link **) p1)->p[0]->pos;
-    unsigned int b = (* (struct Link **) p2)->p[0]->pos;
+    unsigned int a = (* (Link **) p1)->p[0]->pos;
+    unsigned int b = (* (Link **) p2)->p[0]->pos;
     return a - b;
 }
 
 // Comparison function for sorting by right-side (genome B)
 static int cmp_by_b(const void * p1, const void * p2)
 {
-    unsigned int a = (* (struct Link **) p1)->p[1]->pos;
-    unsigned int b = (* (struct Link **) p2)->p[1]->pos;
+    unsigned int a = (* (Link **) p1)->p[1]->pos;
+    unsigned int b = (* (Link **) p2)->p[1]->pos;
     return a - b;
 }
 
 // Read data and build synteny datastructure
-struct Link * load(char * filename){
+Link * load(char * filename){
     FILE * f = fopen(filename, "r");
     size_t size = BUFFER_SIZE;
     char * line = (char *) malloc(size * sizeof(char));
@@ -83,7 +83,7 @@ struct Link * load(char * filename){
     rewind(f);
 
     // A temporary array of links
-    struct Link ** links = (struct Link **)malloc(N * sizeof(struct Link *));
+    Link ** links = (Link **)malloc(N * sizeof(Link *));
     
     for(size_t i = 0; fgets(line, size, f) && !feof(f); i++) {
         if (!sscanf (line, "%d %d %f", &apos, &bpos, &score)) {
@@ -98,7 +98,7 @@ struct Link * load(char * filename){
     }
 
     // Sort by link[i]->p[0]->pos
-    qsort(links, N, sizeof(struct Link *), cmp_by_a);
+    qsort(links, N, sizeof(Link *), cmp_by_a);
     for(size_t i = 0; i < N; i++){
         if(i != 0){
             links[i]->p[0]->prev = links[i-1]->p[0];
@@ -111,7 +111,7 @@ struct Link * load(char * filename){
     links[N-1]->p[0]->next = links[0]->p[0];
 
     // Sort by link[i]->p[1]->pos
-    qsort(links, N, sizeof(struct Link *), cmp_by_b);
+    qsort(links, N, sizeof(Link *), cmp_by_b);
     for(size_t i = 0; i < N; i++){
         if(i != 0){
             links[i]->p[1]->prev = links[i-1]->p[1]; 

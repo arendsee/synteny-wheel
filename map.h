@@ -20,13 +20,13 @@
  * next - the next point on this genome
  * parent - the Link object containing this Point
  */
-struct Point
+typedef struct Point
 {
     unsigned int pos;
     struct Point * prev;
     struct Point * next;
     struct Link * parent;
-};
+} Point;
 
 /**
  * A link between two matching positions on two different genomes
@@ -35,25 +35,25 @@ struct Point
  * p - array of 2 pointers to Point structures on genome A and genome B
  * score - a measure of the certainty that this link is correct
  */
-struct Link
+typedef struct Link
 {
     struct Point ** p;
     float score; 
-};
+} Link;
 
 /**
  * Initialize a Point structure
  *
  * Allocate memory and initialize prev and next to NULL
  */
-struct Point * init_point(unsigned int pos);
+Point * init_point(unsigned int pos);
 
 /**
  * Initialize a Link
  *
  * Allocate memory and initialize both p to NULL
  */
-struct Link * init_link(float score);
+Link * init_link(float score);
 
 /**
  * Read data from a file
@@ -67,23 +67,23 @@ struct Link * init_link(float score);
  * next in p Point structures.
  *
  */
-struct Link * load(char * filename);
+Link * load(char * filename);
 
 /**
  * Free memory in a Point and remove self from the linked list
  */
-void free_point(struct Point * point);
+void free_point(Point * point);
 
 /**
  * Free memory for a Link and call free_point on points 
  */
-void free_link(struct Link * link);
+void free_link(Link * link);
 
 /**
  * Print one Link structure
  *
  * The output is the same format as the input data file
  */
-void print_link(struct Link * link);
+void print_link(Link * link);
 
 #endif

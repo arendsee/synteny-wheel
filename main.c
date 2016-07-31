@@ -5,7 +5,7 @@
 int main(){
 
     // In production code, of course, we won't hardcode this
-    struct Link * link = load("data.txt");
+    Link * link = load("data.txt");
 
     printf("Print as ordered by genome A\n");
     recursive_print(link, 0);
