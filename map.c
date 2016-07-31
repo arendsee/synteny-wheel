@@ -21,10 +21,10 @@ Link * init_link(float score)
 
 void delete_point(Point * point)
 {
-    if(point){
-        if(point->prev)
+    if(point != NULL){
+        if(point->prev != NULL)
             point->prev->next = point->next;
-        if(point->next)
+        if(point->next != NULL)
             point->next->prev = point->prev;
         free(point);
     }
@@ -32,10 +32,10 @@ void delete_point(Point * point)
 
 void delete_link(Link * link)
 {
-    if(link){
-        if(link->p[0])
+    if(link != NULL){
+        if(link->p[0] != NULL)
             delete_point(link->p[0]);
-        if(link->p[1])
+        if(link->p[1] != NULL)
             delete_point(link->p[1]);
         free(link);
     }
@@ -43,7 +43,7 @@ void delete_link(Link * link)
 
 void print_link(Link * link)
 {
-    if(link){
+    if(link != NULL){
         printf(
             "%u\t%u\t%f\n",
             link->p[0]->pos,

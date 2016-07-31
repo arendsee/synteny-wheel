@@ -72,12 +72,12 @@ Link * load(char * filename);
 /**
  * Free memory in a Point and remove self from the linked list
  */
-void free_point(Point * point);
+void delete_point(Point * point);
 
 /**
  * Free memory for a Link and call free_point on points 
  */
-void free_link(Link * link);
+void delete_link(Link * link);
 
 /**
  * Print one Link structure
